@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EngiGame - Desafio da Engenharia</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background-color:#f4f4f4;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+}
+
+h1{
+    color:#0056b3;
+}
+
+button{
+    width:100%;
+    margin:8px 0;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#007bff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+#resultado{
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎮 EngiGame - Desafio da Engenharia</h1>
+
+    <h2 id="pergunta"></h2>
+
+    <div id="opcoes"></div>
+
+    <h3>Pontuação: <span id="pontuacao">0</span></h3>
+
+    <p id="resultado"></p>
+</div>
+
+<script>
+
+const perguntas = [
+
+{
+pergunta:"Quanto é 8 + 7?",
+opcoes:["12","15","18","14"],
+correta:1
+},
+
+{
+pergunta:"Quanto é 9 × 6?",
+opcoes:["54","45","63","56"],
+correta:0
+},
+
+{
+pergunta:"Qual é a raiz quadrada de 81?",
+opcoes:["7","8","9","10"],
+correta:2
+},
+
+{
+pergunta:"O que é um sistema operacional?",
+opcoes:[
+"Um editor de texto",
+"Um software que gerencia os recursos do computador",
+"Um antivírus",
+"Um navegador"
+],
+correta:1
+},
+
+{
+pergunta:"Qual componente executa instruções do computador?",
+opcoes:["Mouse","Monitor","CPU","Teclado"],
+correta:2
+},
+
+{
+pergunta:"O que é memória RAM?",
+opcoes:[
+"Memória permanente",
+"Memória temporária usada pelos programas",
+"Disco rígido",
+"Placa de vídeo"
+],
+correta:1
+},
+
+{
+pergunta:"Qual biblioteca permite usar printf()?",
+opcoes:[
+"#include <math.h>",
+"#include <stdio.h>",
+"#include <string.h>",
+"#include <stdlib.h>"
+],
+correta:1
+},
+
+{
+pergunta:"Qual função exibe texto na tela?",
+opcoes:[
+"scanf()",
+"printf()",
+"mostrar()",
+"print()"
+],
+correta:1
+},
+
+{
+pergunta:"Qual função lê dados digitados pelo usuário?",
+opcoes:[
+"printf()",
+"scanf()",
+"read()",
+"input()"
+],
+correta:1
+},
+
+{
+pergunta:"Qual tipo de variável armazena números inteiros?",
+opcoes:[
+"float",
+"char",
+"int",
+"double"
+],
+correta:2
+},
+
+{
+pergunta:"Qual operador representa multiplicação em C?",
+opcoes:[
+"+",
+"-",
+"*",
+"/"
+],
+correta:2
+},
+
+{
+pergunta:"Qual estrutura é usada para decisões?",
+opcoes:[
+"while",
+"for",
+"if",
+"switch"
+],
+correta:2
+}
+
+];
+
+perguntas.sort(() => Math.random() - 0.5);
+
+let indice = 0;
+let pontos = 0;
+
+function carregarPergunta(){
+
+if(indice >= perguntas.length){
+
+let ranking = "";
+
+if(pontos >= 100){
+ranking = "🏆 Mestre da Engenharia";
+}
+else if(pontos >= 70){
+ranking = "🥇 Engenheiro Avançado";
+}
+else{
+ranking = "📚 Continue estudando!";
+}
+
+document.querySelector(".container").innerHTML = `
+<h1>Fim do Jogo</h1>
+<h2>Pontuação: ${pontos}</h2>
+<h3>${ranking}</h3>
+<button onclick="location.reload()">Jogar Novamente</button>
+`;
+
+return;
+}
+
+document.getElementById("pergunta").textContent =
+perguntas[indice].pergunta;
+
+const opcoesDiv =
+document.getElementById("opcoes");
+
+opcoesDiv.innerHTML = "";
+
+perguntas[indice].opcoes.forEach((opcao,i)=>{
+
+const botao =
+document.createElement("button");
+
+botao.textContent = opcao;
+
+botao.onclick = () =>
+verificarResposta(i);
+
+opcoesDiv.appendChild(botao);
+
+});
+}
+
+function verificarResposta(resposta){
+
+if(resposta === perguntas[indice].correta){
+
+pontos += 10;
+
+document.getElementById("resultado").textContent =
+"✅ Resposta Correta!";
+
+}
+else{
+
+document.getElementById("resultado").textContent =
+"❌ Resposta Incorreta!";
+
+}
+
+document.getElementById("pontuacao").textContent =
+pontos;
+
+indice++;
+
+setTimeout(()=>{
+
+document.getElementById("resultado").textContent =
+"";
+
+carregarPergunta();
+
+},1000);
+
+}
+
+carregarPergunta();
+
+</script>
+
+</body>
+</html>
